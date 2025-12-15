@@ -3,322 +3,198 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>金融程式整合小遊戲</title>
+  <title>金融小遊戲整合</title>
   <style>
     :root{
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #111827;
-      --muted:#6b7280;
-      --border:#e5e7eb;
-      --primary:#1d4ed8;
-      --primary2:#2563eb;
-      --danger:#b91c1c;
-      --success:#047857;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
-      --shadow2: 0 6px 20px rgba(15, 23, 42, 0.08);
-      --radius: 14px;
-      --radius2: 10px;
+      --bg:#f5f7fb; --card:#fff; --text:#111827; --muted:#6b7280;
+      --border:#e5e7eb; --primary:#1d4ed8; --primary2:#2563eb;
+      --danger:#b91c1c; --success:#047857;
+      --shadow:0 10px 30px rgba(15,23,42,.10);
+      --shadow2:0 6px 20px rgba(15,23,42,.08);
+      --radius:14px; --radius2:10px;
     }
-    *{ box-sizing: border-box; }
+    [data-theme="dark"]{
+      --bg:#0b1220; --card:#0f172a; --text:#e5e7eb; --muted:#9ca3af;
+      --border:#22304a; --primary:#60a5fa; --primary2:#93c5fd;
+      --danger:#f87171; --success:#34d399;
+      --shadow:0 12px 36px rgba(0,0,0,.35);
+      --shadow2:0 8px 24px rgba(0,0,0,.28);
+    }
+    *{ box-sizing:border-box; }
     body{
-      margin:0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.45;
+      margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg); color:var(--text); line-height:1.45;
     }
     header{
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: linear-gradient(135deg, var(--primary), #0b3aa8);
-      color:#fff;
-      padding: 16px 18px;
-      box-shadow: var(--shadow2);
+      position:sticky; top:0; z-index:10;
+      background:linear-gradient(135deg, var(--primary), #0b3aa8);
+      color:#fff; padding:14px 18px; box-shadow:var(--shadow2);
     }
+    [data-theme="dark"] header{ background:linear-gradient(135deg, #0b3aa8, #072a74); }
     header .wrap{
-      max-width: 1120px;
-      margin:0 auto;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:baseline;
-      justify-content:space-between;
+      max-width:1120px; margin:0 auto; display:flex; flex-wrap:wrap;
+      gap:10px; align-items:center; justify-content:space-between;
     }
-    header h1{
-      margin:0;
-      font-size: 18px;
-      letter-spacing: .2px;
-    }
-    header p{
-      margin:0;
-      font-size: 12px;
-      opacity:.88;
-    }
+    header h1{ margin:0; font-size:18px; letter-spacing:.2px; }
+    header p{ margin:0; font-size:12px; opacity:.9; }
+    .header-right{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .container{ max-width:1120px; margin:16px auto 48px; padding:0 16px; }
 
-    .container{
-      max-width: 1120px;
-      margin: 16px auto 48px;
-      padding: 0 16px;
-    }
-
-    /* tabs */
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin: 14px 0 14px;
-    }
+    .tabs{ display:flex; gap:10px; flex-wrap:wrap; margin:14px 0; }
     .tab-btn{
-      border:1px solid rgba(255,255,255,.0);
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      color: #111827;
-      cursor:pointer;
-      font-size: 14px;
-      transition: transform .06s ease, background .15s ease, color .15s ease;
+      border:1px solid rgba(255,255,255,0); padding:10px 14px; border-radius:999px;
+      background:var(--border); color:var(--text); cursor:pointer; font-size:14px;
+      transition:transform .06s ease, background .15s ease, color .15s ease;
       user-select:none;
     }
-    .tab-btn:hover{ transform: translateY(-1px); }
+    [data-theme="dark"] .tab-btn{ background:#18233a; border-color:#22304a; }
+    .tab-btn:hover{ transform:translateY(-1px); }
     .tab-btn.active{
-      background: #0b3aa8;
-      color:#fff;
-      box-shadow: 0 8px 20px rgba(29,78,216,.25);
+      background:#0b3aa8; color:#fff; box-shadow:0 8px 20px rgba(29,78,216,.25);
     }
 
     .card{
-      background: var(--card);
-      border: 1px solid rgba(229,231,235,.7);
-      border-radius: var(--radius);
-      padding: 16px 16px;
-      box-shadow: var(--shadow2);
-      margin-bottom: 14px;
+      background:var(--card); border:1px solid rgba(229,231,235,.7);
+      border-radius:var(--radius); padding:16px; box-shadow:var(--shadow2);
+      margin-bottom:14px;
     }
+    [data-theme="dark"] .card{ border-color:rgba(34,48,74,.9); }
 
     .card-header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom: 8px;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom:8px;
     }
-
-    h2{
-      margin:0;
-      font-size: 18px;
-      color: var(--text);
-      letter-spacing: .2px;
-    }
-    h3{
-      margin: 16px 0 8px;
-      font-size: 14px;
-      color: var(--text);
-      letter-spacing: .1px;
-    }
-    .small{
-      font-size: 12px;
-      color: var(--muted);
-      margin: 6px 0 0;
-    }
+    h2{ margin:0; font-size:18px; letter-spacing:.2px; }
+    h3{ margin:16px 0 8px; font-size:14px; letter-spacing:.1px; }
+    .small{ font-size:12px; color:var(--muted); margin:6px 0 0; }
 
     .pill{
-      display:inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: var(--primary2);
-      font-size: 11px;
-      border: 1px solid rgba(37,99,235,.15);
-      vertical-align: middle;
+      display:inline-block; padding:2px 8px; border-radius:999px;
+      background:rgba(37,99,235,.10); color:var(--primary2); font-size:11px;
+      border:1px solid rgba(37,99,235,.15);
     }
+    [data-theme="dark"] .pill{ background:rgba(147,197,253,.12); border-color:rgba(147,197,253,.18); }
 
-    /* forms */
-    label{
-      display:block;
-      font-size: 12px;
-      color: #374151;
-      margin-bottom: 5px;
-    }
+    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:5px; }
     input, textarea, select{
-      width:100%;
-      font-family:inherit;
-      font-size: 13px;
-      padding: 9px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #fff;
-      outline:none;
+      width:100%; font-family:inherit; font-size:13px;
+      padding:9px 10px; border-radius:10px; border:1px solid var(--border);
+      background:var(--card); color:var(--text); outline:none;
       transition: box-shadow .12s ease, border-color .12s ease;
     }
     input:focus, textarea:focus, select:focus{
       border-color: rgba(37,99,235,.55);
       box-shadow: 0 0 0 4px rgba(37,99,235,.12);
     }
-    textarea{ resize: vertical; min-height: 82px; }
+    textarea{ resize:vertical; min-height:82px; }
 
-    .grid{
-      display:grid;
-      gap: 12px;
-      grid-template-columns: repeat(12, 1fr);
+    .grid{ display:grid; gap:12px; grid-template-columns:repeat(12,1fr); }
+    .col-3{ grid-column:span 3; }
+    .col-4{ grid-column:span 4; }
+    .col-6{ grid-column:span 6; }
+    .col-12{ grid-column:span 12; }
+    @media (max-width:980px){
+      .col-3,.col-4{ grid-column:span 6; }
+      .col-6{ grid-column:span 12; }
     }
-    .col-3{ grid-column: span 3; }
-    .col-4{ grid-column: span 4; }
-    .col-6{ grid-column: span 6; }
-    .col-12{ grid-column: span 12; }
-
-    @media (max-width: 980px){
-      .col-3{ grid-column: span 6; }
-      .col-4{ grid-column: span 6; }
-      .col-6{ grid-column: span 12; }
-    }
-    @media (max-width: 560px){
-      .col-3,.col-4{ grid-column: span 12; }
-      header .wrap{ align-items:flex-start; }
+    @media (max-width:560px){
+      .col-3,.col-4{ grid-column:span 12; }
     }
 
-    .btn-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top: 10px;
-    }
+    .btn-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
     .btn{
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(29,78,216,.0);
-      background: var(--primary);
-      color:#fff;
-      cursor:pointer;
-      font-size: 13px;
+      padding:10px 14px; border-radius:999px;
+      border:1px solid rgba(29,78,216,0);
+      background:var(--primary); color:#fff; cursor:pointer; font-size:13px;
       transition: transform .06s ease, box-shadow .15s ease, opacity .15s ease, background .15s ease;
-      box-shadow: 0 10px 20px rgba(29,78,216,.22);
-      user-select:none;
+      box-shadow:0 10px 20px rgba(29,78,216,.22); user-select:none;
     }
-    .btn:hover{ transform: translateY(-1px); background: #1646c7; }
-    .btn:disabled{ opacity:.5; cursor: not-allowed; transform:none; box-shadow:none; }
+    .btn:hover{ transform:translateY(-1px); background:#1646c7; }
+    .btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
     .btn.ghost{
-      background:#fff;
-      color: var(--primary);
-      border: 1px solid rgba(29,78,216,.22);
-      box-shadow:none;
+      background:transparent; color:var(--primary2);
+      border:1px solid rgba(29,78,216,.22); box-shadow:none;
     }
-    .btn.ghost:hover{ background:#eff6ff; }
+    [data-theme="dark"] .btn.ghost{ border-color:rgba(147,197,253,.25); }
+    .btn.ghost:hover{ background:rgba(37,99,235,.08); }
 
     .alert{
-      border-radius: 12px;
-      padding: 10px 12px;
-      border: 1px solid rgba(229,231,235,.9);
-      background: #f9fafb;
-      color: #111827;
-      font-size: 13px;
-      margin-top: 10px;
-      display:none;
+      border-radius:12px; padding:10px 12px;
+      border:1px solid rgba(229,231,235,.9);
+      background:rgba(107,114,128,.06);
+      color:var(--text); font-size:13px; margin-top:10px; display:none;
     }
+    [data-theme="dark"] .alert{ border-color:rgba(34,48,74,.9); background:rgba(156,163,175,.10); }
     .alert.show{ display:block; }
-    .alert.danger{
-      border-color: rgba(185, 28, 28, .20);
-      background: rgba(185, 28, 28, .06);
-      color: #7f1d1d;
-    }
-    .alert.success{
-      border-color: rgba(4, 120, 87, .20);
-      background: rgba(4, 120, 87, .06);
-      color: #064e3b;
-    }
+    .alert.danger{ border-color:rgba(185,28,28,.20); background:rgba(185,28,28,.08); }
+    .alert.success{ border-color:rgba(4,120,87,.20); background:rgba(4,120,87,.08); }
 
-    .stat{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
+    .stat{ display:grid; grid-template-columns:repeat(12,1fr); gap:10px; margin-top:10px; }
     .stat .item{
-      grid-column: span 3;
-      border: 1px solid rgba(229,231,235,.9);
-      border-radius: 12px;
-      padding: 10px 10px;
-      background: #fff;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      grid-column:span 3; border:1px solid rgba(229,231,235,.9);
+      border-radius:12px; padding:10px; background:var(--card);
+      box-shadow:0 6px 18px rgba(15,23,42,.06);
     }
-    .stat .k{ font-size: 12px; color: var(--muted); }
-    .stat .v{ font-size: 16px; font-weight: 700; margin-top: 2px; }
-    @media (max-width: 980px){ .stat .item{ grid-column: span 6; } }
-    @media (max-width: 560px){ .stat .item{ grid-column: span 12; } }
+    [data-theme="dark"] .stat .item{ border-color:rgba(34,48,74,.9); box-shadow:0 10px 24px rgba(0,0,0,.22); }
+    .stat .k{ font-size:12px; color:var(--muted); }
+    .stat .v{ font-size:16px; font-weight:700; margin-top:2px; }
+    @media (max-width:980px){ .stat .item{ grid-column:span 6; } }
+    @media (max-width:560px){ .stat .item{ grid-column:span 12; } }
 
-    /* tables */
     .table-wrap{
-      width:100%;
-      overflow:auto;
-      border-radius: 12px;
-      border: 1px solid rgba(229,231,235,.9);
-      background:#fff;
-      margin-top: 10px;
+      width:100%; overflow:auto; border-radius:12px;
+      border:1px solid rgba(229,231,235,.9); background:var(--card); margin-top:10px;
     }
-    table{
-      width:100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      min-width: 760px;
-    }
+    [data-theme="dark"] .table-wrap{ border-color:rgba(34,48,74,.9); }
+    table{ width:100%; border-collapse:collapse; font-size:12px; min-width:760px; }
     th,td{
-      border-bottom: 1px solid rgba(229,231,235,.9);
-      padding: 8px 10px;
-      text-align:right;
-      white-space: nowrap;
+      border-bottom:1px solid rgba(229,231,235,.9);
+      padding:8px 10px; text-align:right; white-space:nowrap;
     }
+    [data-theme="dark"] th, [data-theme="dark"] td{ border-bottom-color:rgba(34,48,74,.9); }
     th{
-      position: sticky;
-      top: 0;
-      background: #f3f4f6;
-      font-weight: 700;
-      color:#111827;
-      z-index: 1;
+      position:sticky; top:0; background:rgba(243,244,246,.9);
+      font-weight:700; z-index:1; color:var(--text);
     }
+    [data-theme="dark"] th{ background:#121b2f; }
     td:first-child, th:first-child{ text-align:left; }
-    .neg{ color: var(--danger); font-weight: 700; }
-    .pos{ color: var(--success); font-weight: 700; }
+    .neg{ color:var(--danger); font-weight:700; }
+    .pos{ color:var(--success); font-weight:700; }
 
     .section{ display:none; }
     .section.active{ display:block; }
 
-    .split{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
     .radio-line, .check-line{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin: 8px 0 0;
-      font-size: 13px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin:8px 0 0; font-size:13px;
     }
     .radio-line label, .check-line label{
-      display:flex;
-      align-items:center;
-      gap:6px;
-      margin:0;
-      font-size: 13px;
-      color:#111827;
+      display:flex; align-items:center; gap:6px;
+      margin:0; font-size:13px; color:var(--text);
     }
-    input[type="radio"], input[type="checkbox"]{
-      width:auto;
-      margin:0;
-      accent-color: var(--primary);
-    }
+    input[type="radio"], input[type="checkbox"]{ width:auto; margin:0; accent-color:var(--primary); }
 
-    .hint{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
+    .hint{ font-size:12px; color:var(--muted); margin-top:6px; }
+    .mono{ font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; }
+
+    /* modal */
+    .modal-backdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,.45);
+      display:none; align-items:center; justify-content:center; padding:16px; z-index:99;
     }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .modal-backdrop.show{ display:flex; }
+    .modal{
+      width:min(720px, 100%); background:var(--card); color:var(--text);
+      border:1px solid rgba(229,231,235,.9); border-radius:16px; box-shadow:var(--shadow);
+      padding:14px;
+    }
+    [data-theme="dark"] .modal{ border-color:rgba(34,48,74,.9); }
+    .modal-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .icon-btn{
+      border:1px solid rgba(229,231,235,.9); background:transparent; color:var(--text);
+      border-radius:10px; padding:8px 10px; cursor:pointer;
+    }
+    [data-theme="dark"] .icon-btn{ border-color:rgba(34,48,74,.9); }
   </style>
 </head>
 
@@ -326,17 +202,21 @@
 <header>
   <div class="wrap">
     <div>
-      <h1>金融程式整合小遊戲</h1>
-      <p>把「股利投資 / 收支事件 / 保險 + 貸款」整合成同一個可用網頁</p>
+      <h1>金融小遊戲整合</h1>
+      <p>投資／收支事件／保險／貸款，一個頁面搞定</p>
     </div>
-    <p class="mono" style="opacity:.9;">v2.0（美化 + 補齊功能 + 可匯出/可保存）</p>
+    <div class="header-right">
+      <span class="pill">自動保存</span>
+      <button class="btn ghost" id="themeBtn" type="button" style="padding:9px 12px;">切換深色</button>
+      <p class="mono" style="opacity:.9; margin:0;">v2.1</p>
+    </div>
   </div>
 </header>
 
 <div class="container">
   <div class="tabs" role="tablist" aria-label="模組切換">
-    <button class="tab-btn active" data-target="module-invest" role="tab" aria-selected="true">股利／投資模擬</button>
-    <button class="tab-btn" data-target="module-budget" role="tab" aria-selected="false">收支配置＋事件</button>
+    <button class="tab-btn active" data-target="module-invest" role="tab" aria-selected="true">投資模擬</button>
+    <button class="tab-btn" data-target="module-budget" role="tab" aria-selected="false">收支＋事件</button>
     <button class="tab-btn" data-target="module-insurance" role="tab" aria-selected="false">保險＋貸款</button>
   </div>
 
@@ -345,13 +225,10 @@
     <div class="card">
       <div class="card-header">
         <div>
-          <h2>股利／投資模擬</h2>
-          <p class="small">
-            你原本版本用「年報酬率序列」直接計算資產成長，等同使用「總報酬率（Total Return）」概念。
-            新版保留這條路，並新增「股價成長 + 股利殖利率 + 再投入」模式（更接近存股實務）。
-          </p>
+          <h2>投資模擬</h2>
+          <p class="small">兩種算法：A 用總報酬率；B 拆股價成長＋殖利率（可選股利再投入）。</p>
         </div>
-        <span class="pill">設定會自動保存</span>
+        <span class="pill">新增：年度明細＋匯出</span>
       </div>
 
       <div class="grid">
@@ -374,8 +251,8 @@
         <div class="col-6">
           <label>投入方式</label>
           <div class="radio-line">
-            <label><input type="radio" name="inv-mode" value="lumpsum" checked /> 一次性投入</label>
-            <label><input type="radio" name="inv-mode" value="annual" /> 每年固定金額</label>
+            <label><input type="radio" name="inv-mode" value="lumpsum" checked /> 一次投入</label>
+            <label><input type="radio" name="inv-mode" value="annual" /> 每年投入固定金額</label>
           </div>
           <div class="grid" style="margin-top:10px;">
             <div class="col-6">
@@ -390,82 +267,81 @@
         </div>
       </div>
 
-      <h3>計算模式（重要）</h3>
+      <h3>模式 A：總報酬率序列</h3>
       <div class="grid">
         <div class="col-6">
-          <label>模式 A：總報酬率序列（含息報酬/你已把股利揉進去） <span class="pill">沿用原本邏輯</span></label>
+          <label>年報酬率（小數、逗號）</label>
           <textarea id="inv-returns" placeholder="例如：0.08,0.05,0.03,-0.02,0.1">0.08,0.05,0.03,-0.02,0.1</textarea>
-          <div class="hint">用在：你已經有「總報酬率」資料（股價變動 + 股利再投入 + 其他都算進去）。</div>
+          <div class="hint">適合：你已經把股價＋股利再投入都算成「總報酬率」。</div>
         </div>
 
         <div class="col-6">
-          <label>模式 B：股價成長率 + 股利殖利率（較貼近實務）</label>
+          <h3 style="margin-top:0;">模式 B：股價成長＋殖利率</h3>
           <div class="grid">
             <div class="col-6">
               <label>起始股價</label>
               <input id="inv-start-price" type="number" min="0" value="100" />
             </div>
             <div class="col-6">
-              <label>是否股利再投入</label>
+              <label>股利再投入</label>
               <select id="inv-reinvest">
-                <option value="yes" selected>是（DRIP）</option>
-                <option value="no">否（股利領現）</option>
+                <option value="yes" selected>是</option>
+                <option value="no">否（領現）</option>
               </select>
             </div>
             <div class="col-6">
-              <label>年股價成長率序列（小數, 逗號）</label>
+              <label>年股價成長率（小數、逗號）</label>
               <input id="inv-growth" type="text" value="0.06,0.04,0.02,-0.03,0.08" />
             </div>
             <div class="col-6">
-              <label>年股利殖利率序列（小數, 逗號）</label>
+              <label>年股利殖利率（小數、逗號）</label>
               <input id="inv-divy" type="text" value="0.03,0.03,0.035,0.04,0.03" />
             </div>
             <div class="col-6">
-              <label>股利稅/費（簡化%）</label>
+              <label>股利稅/費（%）</label>
               <input id="inv-div-tax" type="number" step="0.1" value="0" />
-              <div class="hint">例如填 10 代表扣 10%（簡化）。若你要完全照台股稅制，之後可再擴充。</div>
             </div>
             <div class="col-6">
-              <label>交易成本（再投入時，簡化%）</label>
+              <label>買入成本（%）</label>
               <input id="inv-fee" type="number" step="0.01" value="0" />
-              <div class="hint">例如填 0.1425 代表手續費 0.1425%（示意）。</div>
             </div>
           </div>
-
-          <div class="hint">
-            ⚠️ 注意：若你 Excel 用的是「每股股利 DPS」而不是「殖利率」，請把程式碼中 <span class="mono">dividend = value * divYield</span> 改成 <span class="mono">dividend = shares * dps</span>（我在 JS 裡有標註位置）。
-          </div>
+          <div class="hint">備註：這裡用「殖利率」估股利。若你要改成「每股股利 DPS」，程式裡有標註改法。</div>
         </div>
       </div>
 
       <div class="btn-row">
-        <button class="btn" onclick="runInvestment()">計算投資結果</button>
-        <button class="btn ghost" onclick="resetInvest()">重設投資輸入</button>
+        <button class="btn" onclick="runInvestment()">計算</button>
+        <button class="btn ghost" onclick="exportInvestCSV()">匯出投資明細 CSV</button>
+        <button class="btn ghost" onclick="resetInvest()">重設</button>
       </div>
       <div id="inv-alert" class="alert" role="alert" aria-live="polite"></div>
 
       <div class="stat" style="margin-top:12px;">
-        <div class="item">
-          <div class="k">投入成本</div>
-          <div class="v" id="inv-total-invest">-</div>
-        </div>
-        <div class="item">
-          <div class="k">最終財富</div>
-          <div class="v" id="inv-final-wealth">-</div>
-        </div>
-        <div class="item">
-          <div class="k">累積報酬率</div>
-          <div class="v" id="inv-total-return">-</div>
-        </div>
-        <div class="item">
-          <div class="k">年化報酬率（幾何）</div>
-          <div class="v" id="inv-annual-return">-</div>
-        </div>
+        <div class="item"><div class="k">投入成本</div><div class="v" id="inv-total-invest">-</div></div>
+        <div class="item"><div class="k">最終財富</div><div class="v" id="inv-final-wealth">-</div></div>
+        <div class="item"><div class="k">累積報酬率</div><div class="v" id="inv-total-return">-</div></div>
+        <div class="item"><div class="k">年化報酬率（幾何）</div><div class="v" id="inv-annual-return">-</div></div>
       </div>
 
-      <div class="hint" style="margin-top:10px;">
-        ✅ 你要「完全對齊 Excel」：你需要把 Excel 中「股利計算（含稅/補充保費/手續費/股數變動）」的欄位規則給我，我就能把模式 B 的計算改成 100% 同步。
+      <h3>年度明細</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>年</th>
+              <th>投入</th>
+              <th>股價</th>
+              <th>股數</th>
+              <th>股利（稅後）</th>
+              <th>領現股利</th>
+              <th>期末總資產</th>
+            </tr>
+          </thead>
+          <tbody id="inv-table-body"></tbody>
+        </table>
       </div>
+      <div class="hint">提醒：這是「年」尺度的簡化示範；若你要月配/季配、配息日、手續費/證交稅更精準，可以再擴充。</div>
     </div>
   </section>
 
@@ -474,12 +350,10 @@
     <div class="card">
       <div class="card-header">
         <div>
-          <h2>收支配置＋生活事件小遊戲</h2>
-          <p class="small">
-            新版把你的「百分比分配」補齊：每回合視為 1 個月，先入帳收入，再依比例分桶；事件會影響現金並記錄。
-          </p>
+          <h2>收支＋生活事件</h2>
+          <p class="small">每回合＝1 個月：先入帳、再分桶、最後抽事件。</p>
         </div>
-        <span class="pill">可匯出 CSV</span>
+        <span class="pill">新增：回合復原＋自訂事件</span>
       </div>
 
       <h3>基本設定</h3>
@@ -505,48 +379,34 @@
           <input id="pct-invest" type="number" min="0" max="100" value="20" />
         </div>
         <div class="col-3">
-          <label>起始現金（可選）</label>
+          <label>起始現金</label>
           <input id="budget-start-cash" type="number" min="0" value="65000" />
+        </div>
+        <div class="col-6">
+          <label>事件強度（越大越常觸發）</label>
+          <input id="budget-event-intensity" type="number" min="0" max="300" value="100" />
+          <div class="hint">100 = 正常；50 = 比較少事；150 = 事件很多。</div>
         </div>
       </div>
 
       <div class="btn-row">
-        <button class="btn" id="budget-start-btn" onclick="startBudgetGame()">開始新遊戲</button>
-        <button class="btn" id="budget-next-btn" onclick="nextBudgetTurn()" disabled>下一回合（1 個月）</button>
-        <button class="btn ghost" onclick="clearBudgetLog()">清除紀錄</button>
+        <button class="btn" id="budget-start-btn" onclick="startBudgetGame()">開始／重新開始</button>
+        <button class="btn" id="budget-next-btn" onclick="nextBudgetTurn()" disabled>下一回合</button>
+        <button class="btn ghost" id="budget-undo-btn" onclick="undoBudgetTurn()" disabled>復原上一回合</button>
+        <button class="btn ghost" onclick="openEventModal()">新增自訂事件</button>
         <button class="btn ghost" onclick="exportBudgetCSV()">匯出 CSV</button>
+        <button class="btn ghost" onclick="clearBudgetLog()">清除紀錄</button>
       </div>
       <div id="budget-alert" class="alert" role="alert" aria-live="polite"></div>
 
       <div class="stat">
-        <div class="item">
-          <div class="k">回合數</div>
-          <div class="v" id="budget-turn">-</div>
-        </div>
-        <div class="item">
-          <div class="k">現金餘額</div>
-          <div class="v" id="budget-cash">-</div>
-        </div>
-        <div class="item">
-          <div class="k">必需品累積</div>
-          <div class="v" id="bucket-necessities">-</div>
-        </div>
-        <div class="item">
-          <div class="k">緊急預備金累積</div>
-          <div class="v" id="bucket-emergency">-</div>
-        </div>
-        <div class="item">
-          <div class="k">娛樂累積</div>
-          <div class="v" id="bucket-entertainment">-</div>
-        </div>
-        <div class="item">
-          <div class="k">投資累積</div>
-          <div class="v" id="bucket-invest">-</div>
-        </div>
-        <div class="item">
-          <div class="k">其他累積</div>
-          <div class="v" id="bucket-other">-</div>
-        </div>
+        <div class="item"><div class="k">回合數</div><div class="v" id="budget-turn">-</div></div>
+        <div class="item"><div class="k">現金餘額</div><div class="v" id="budget-cash">-</div></div>
+        <div class="item"><div class="k">必需品累積</div><div class="v" id="bucket-necessities">-</div></div>
+        <div class="item"><div class="k">緊急預備金累積</div><div class="v" id="bucket-emergency">-</div></div>
+        <div class="item"><div class="k">娛樂累積</div><div class="v" id="bucket-entertainment">-</div></div>
+        <div class="item"><div class="k">投資累積</div><div class="v" id="bucket-invest">-</div></div>
+        <div class="item"><div class="k">其他累積</div><div class="v" id="bucket-other">-</div></div>
       </div>
 
       <h3>事件紀錄</h3>
@@ -555,7 +415,7 @@
           <thead>
             <tr>
               <th>回合</th>
-              <th>月收入入帳</th>
+              <th>月收入</th>
               <th>分配（必需/緊急/娛樂/投資/其他）</th>
               <th>事件</th>
               <th>事件金額</th>
@@ -566,6 +426,8 @@
           <tbody id="budget-log-body"></tbody>
         </table>
       </div>
+
+      <div class="hint">小提醒：自訂事件會保存到你的瀏覽器（localStorage）。</div>
     </div>
   </section>
 
@@ -574,55 +436,43 @@
     <div class="card">
       <div class="card-header">
         <div>
-          <h2>保險小遊戲（保費 vs 理賠/自付）</h2>
-          <p class="small">
-            新增「沒保險時的事故成本（自付）」欄位，讓情境更接近現實。
-          </p>
+          <h2>保險小遊戲</h2>
+          <p class="small">每回合＝1 年：先扣保費，再判定事故。有保險拿理賠；沒保險用自付成本。</p>
         </div>
         <span class="pill">可匯出 CSV</span>
       </div>
 
       <h3>參數</h3>
       <div class="grid">
-        <div class="col-3">
-          <label>起始現金</label>
-          <input id="ins-start-cash" type="number" value="120000" />
-        </div>
-        <div class="col-3">
-          <label>起始年齡</label>
-          <input id="ins-start-age" type="number" value="24" />
-        </div>
-        <div class="col-3">
-          <label>總回合（年）</label>
-          <input id="ins-max-turns" type="number" value="15" />
-        </div>
+        <div class="col-3"><label>起始現金</label><input id="ins-start-cash" type="number" value="120000" /></div>
+        <div class="col-3"><label>起始年齡</label><input id="ins-start-age" type="number" value="24" /></div>
+        <div class="col-3"><label>總回合（年）</label><input id="ins-max-turns" type="number" value="15" /></div>
       </div>
 
       <div class="grid" style="margin-top:8px;">
         <div class="col-3">
-          <h3>保費 Prem</h3>
-          <label>壽險保費</label><input id="ins-prem-life" type="number" value="6000" />
-          <label>醫療保費</label><input id="ins-prem-medical" type="number" value="4500" />
-          <label>財產保費</label><input id="ins-prem-property" type="number" value="3000" />
+          <h3>保費</h3>
+          <label>壽險</label><input id="ins-prem-life" type="number" value="6000" />
+          <label>醫療險</label><input id="ins-prem-medical" type="number" value="4500" />
+          <label>財產險</label><input id="ins-prem-property" type="number" value="3000" />
         </div>
         <div class="col-3">
-          <h3>事故機率 Prob</h3>
+          <h3>事故機率</h3>
           <label>壽險</label><input id="ins-prob-life" type="number" step="0.01" value="0.01" />
           <label>醫療</label><input id="ins-prob-medical" type="number" step="0.01" value="0.12" />
           <label>財產</label><input id="ins-prob-property" type="number" step="0.01" value="0.06" />
         </div>
         <div class="col-3">
-          <h3>理賠 Payout</h3>
-          <label>壽險理賠</label><input id="ins-payout-life" type="number" value="500000" />
-          <label>醫療理賠</label><input id="ins-payout-medical" type="number" value="50000" />
-          <label>財產理賠</label><input id="ins-payout-property" type="number" value="120000" />
+          <h3>理賠</h3>
+          <label>壽險</label><input id="ins-payout-life" type="number" value="500000" />
+          <label>醫療</label><input id="ins-payout-medical" type="number" value="50000" />
+          <label>財產</label><input id="ins-payout-property" type="number" value="120000" />
         </div>
         <div class="col-3">
-          <h3>沒保險自付成本（事故發生時）</h3>
+          <h3>沒保險自付成本</h3>
           <label>壽險事故成本</label><input id="ins-costno-life" type="number" value="300000" />
           <label>醫療事故成本</label><input id="ins-costno-medical" type="number" value="30000" />
           <label>財產事故成本</label><input id="ins-costno-property" type="number" value="80000" />
-          <div class="hint">若你 Excel 有「自付額/免賠額」等規則，也能再擴充。</div>
         </div>
       </div>
 
@@ -633,10 +483,10 @@
       </div>
 
       <div class="btn-row">
-        <button class="btn" onclick="startInsGame()">開始新遊戲</button>
+        <button class="btn" onclick="startInsGame()">開始</button>
         <button class="btn" id="ins-next-btn" onclick="nextInsTurn()" disabled>下一回合</button>
-        <button class="btn ghost" onclick="clearInsLog()">清除紀錄</button>
         <button class="btn ghost" onclick="exportInsCSV()">匯出 CSV</button>
+        <button class="btn ghost" onclick="clearInsLog()">清除紀錄</button>
       </div>
       <div id="ins-alert" class="alert" role="alert" aria-live="polite"></div>
 
@@ -646,7 +496,7 @@
         <div class="item"><div class="k">現金餘額</div><div class="v" id="ins-cash">-</div></div>
         <div class="item"><div class="k">累積保費</div><div class="v" id="ins-total-prem">-</div></div>
         <div class="item"><div class="k">累積理賠</div><div class="v" id="ins-total-payout">-</div></div>
-        <div class="item"><div class="k">累積自付（沒保險）</div><div class="v" id="ins-total-outofpocket">-</div></div>
+        <div class="item"><div class="k">累積自付</div><div class="v" id="ins-total-outofpocket">-</div></div>
       </div>
 
       <h3>事件紀錄</h3>
@@ -658,7 +508,7 @@
               <th>年齡</th>
               <th>保費支出</th>
               <th>理賠收入</th>
-              <th>沒保險自付</th>
+              <th>自付（沒保險）</th>
               <th>事故說明</th>
               <th>回合後現金</th>
             </tr>
@@ -671,41 +521,29 @@
     <div class="card">
       <div class="card-header">
         <div>
-          <h2>貸款攤還表試算</h2>
-          <p class="small">支援利率 0% 情境；最後一期補差更嚴謹，避免浮點誤差。</p>
+          <h2>貸款攤還表</h2>
+          <p class="small">支援 0% 利率；最後一期自動補差，避免浮點誤差。</p>
         </div>
-        <span class="pill">可直接複製回 Excel</span>
+        <span class="pill">可複製回 Excel</span>
       </div>
 
       <div class="grid">
-        <div class="col-3">
-          <label>貸款本金</label>
-          <input id="loan-principal" type="number" value="500000" />
-        </div>
-        <div class="col-3">
-          <label>貸款年利率（%）</label>
-          <input id="loan-rate" type="number" step="0.01" value="2" />
-        </div>
-        <div class="col-3">
-          <label>貸款年限（年）</label>
-          <input id="loan-years" type="number" value="15" />
-        </div>
-        <div class="col-3">
-          <label>每年付款次數</label>
-          <input id="loan-nperyear" type="number" value="12" />
-        </div>
+        <div class="col-3"><label>本金</label><input id="loan-principal" type="number" value="500000" /></div>
+        <div class="col-3"><label>年利率（%）</label><input id="loan-rate" type="number" step="0.01" value="2" /></div>
+        <div class="col-3"><label>年限（年）</label><input id="loan-years" type="number" value="15" /></div>
+        <div class="col-3"><label>每年付款次數</label><input id="loan-nperyear" type="number" value="12" /></div>
       </div>
 
       <div class="btn-row">
-        <button class="btn" onclick="calcLoan()">計算攤還表</button>
+        <button class="btn" onclick="calcLoan()">計算</button>
         <button class="btn ghost" onclick="clearLoan()">清除</button>
       </div>
       <div id="loan-alert" class="alert" role="alert" aria-live="polite"></div>
 
       <div class="stat">
-        <div class="item"><div class="k">每期應付金額</div><div class="v" id="loan-payment">-</div></div>
-        <div class="item"><div class="k">總支付利息</div><div class="v" id="loan-total-interest">-</div></div>
-        <div class="item"><div class="k">總還款金額</div><div class="v" id="loan-total-paid">-</div></div>
+        <div class="item"><div class="k">每期應付</div><div class="v" id="loan-payment">-</div></div>
+        <div class="item"><div class="k">總利息</div><div class="v" id="loan-total-interest">-</div></div>
+        <div class="item"><div class="k">總還款</div><div class="v" id="loan-total-paid">-</div></div>
       </div>
 
       <h3>攤還明細</h3>
@@ -727,11 +565,52 @@
   </section>
 </div>
 
+<!-- 自訂事件 Modal -->
+<div class="modal-backdrop" id="eventModal" role="dialog" aria-modal="true" aria-label="新增自訂事件">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3 style="margin:0;">新增自訂事件</h3>
+        <div class="hint" style="margin-top:4px;">權重越大越容易抽到；金額可正可負。</div>
+      </div>
+      <button class="icon-btn" type="button" onclick="closeEventModal()">關閉</button>
+    </div>
+    <div class="grid" style="margin-top:10px;">
+      <div class="col-6">
+        <label>事件名稱</label>
+        <input id="evt-name" type="text" placeholder="例如：手機壞掉" />
+      </div>
+      <div class="col-6">
+        <label>事件金額（元）</label>
+        <input id="evt-delta" type="number" placeholder="-8000 或 20000" />
+      </div>
+      <div class="col-12">
+        <label>說明</label>
+        <textarea id="evt-desc" placeholder="簡短說明就好"></textarea>
+      </div>
+      <div class="col-6">
+        <label>權重（1~100）</label>
+        <input id="evt-weight" type="number" min="1" max="100" value="10" />
+      </div>
+      <div class="col-6">
+        <label>快速管理</label>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn" type="button" onclick="addCustomEvent()">加入事件</button>
+          <button class="btn ghost" type="button" onclick="clearCustomEvents()">清空自訂事件</button>
+        </div>
+      </div>
+    </div>
+    <div id="evt-alert" class="alert" role="alert" aria-live="polite"></div>
+  </div>
+</div>
+
 <script>
   /* =========================
      共用工具
   ========================= */
-  const LS_KEY = "finance_game_v2_state";
+  const LS_KEY = "finance_game_v21_state";
+  const LS_THEME = "finance_game_theme";
+  const LS_BUDGET_EVENTS = "finance_game_budget_events_v1";
 
   function formatMoney(num){
     if (num === null || num === undefined || isNaN(num)) return "-";
@@ -742,6 +621,7 @@
     return isNaN(v) ? 0 : v;
   }
   function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
   function showAlert(id, msg, type="danger"){
     const el = document.getElementById(id);
     el.className = "alert show " + (type === "success" ? "success" : "danger");
@@ -765,13 +645,28 @@
     const blob = new Blob([text], {type:"text/csv;charset=utf-8"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
   }
+
+  /* =========================
+     深色模式
+  ========================= */
+  function setTheme(theme){
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem(LS_THEME, theme);
+    document.getElementById("themeBtn").textContent = theme === "dark" ? "切換淺色" : "切換深色";
+  }
+  (function initTheme(){
+    const saved = localStorage.getItem(LS_THEME);
+    const theme = saved || "light";
+    setTheme(theme);
+  })();
+  document.getElementById("themeBtn").addEventListener("click", ()=>{
+    const cur = document.documentElement.getAttribute("data-theme") || "light";
+    setTheme(cur === "dark" ? "light" : "dark");
+  });
 
   /* =========================
      Tabs（含 hash）
@@ -788,12 +683,8 @@
     sections.forEach(sec => sec.classList.toggle("active", sec.id === targetId));
     location.hash = targetId;
   }
+  tabBtns.forEach(btn=> btn.addEventListener("click", ()=> activateTab(btn.dataset.target)));
 
-  tabBtns.forEach(btn=>{
-    btn.addEventListener("click", ()=> activateTab(btn.dataset.target));
-  });
-
-  // 初始 hash
   if (location.hash){
     const id = location.hash.replace("#","");
     if (document.getElementById(id)) activateTab(id);
@@ -807,7 +698,7 @@
     "inv-stock","inv-years","inv-lumpsum","inv-annual","inv-returns",
     "inv-start-price","inv-reinvest","inv-growth","inv-divy","inv-div-tax","inv-fee",
     // budget
-    "budget-income","pct-necessities","pct-emergency","pct-entertainment","pct-invest","budget-start-cash",
+    "budget-income","pct-necessities","pct-emergency","pct-entertainment","pct-invest","budget-start-cash","budget-event-intensity",
     // insurance
     "ins-start-cash","ins-start-age","ins-max-turns",
     "ins-prem-life","ins-prem-medical","ins-prem-property",
@@ -852,7 +743,7 @@
   });
 
   /* =========================
-     模組一：投資
+     模組一：投資（含年度明細）
   ========================= */
   function parseSeries(text){
     return String(text || "")
@@ -861,118 +752,136 @@
       .filter(v => !isNaN(v));
   }
 
+  let investLastRows = []; // for export
+  let investLastMode = ""; // A or B
+
+  function renderInvestTable(rows){
+    const tbody = document.getElementById("inv-table-body");
+    tbody.innerHTML = "";
+    rows.forEach(r=>{
+      const tr = document.createElement("tr");
+      r.forEach((v, idx)=>{
+        const td = document.createElement("td");
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
   function runInvestment(){
     hideAlert("inv-alert");
+    investLastRows = [];
+    investLastMode = "";
+
     const years = parseInt(document.getElementById("inv-years").value, 10) || 0;
-    if (years <= 0){
-      showAlert("inv-alert","投資期間請輸入正整數。");
-      return;
-    }
+    if (years <= 0){ showAlert("inv-alert","投資期間請輸入正整數。"); return; }
 
     const mode = document.querySelector('input[name="inv-mode"]:checked').value;
     const lump = parseNumberById("inv-lumpsum");
     const annual = parseNumberById("inv-annual");
+    if (mode === "lumpsum" && lump <= 0){ showAlert("inv-alert","一次投入金額需大於 0。"); return; }
+    if (mode === "annual" && annual <= 0){ showAlert("inv-alert","每年投入金額需大於 0。"); return; }
 
-    if (mode === "lumpsum" && lump <= 0){
-      showAlert("inv-alert","一次性投入金額需大於 0。");
-      return;
-    }
-    if (mode === "annual" && annual <= 0){
-      showAlert("inv-alert","每年投入金額需大於 0。");
-      return;
-    }
-
-    // 兩種計算模式：A（總報酬率）或 B（股價+股利）
     const returnsA = parseSeries(document.getElementById("inv-returns").value);
     const startPrice = parseNumberById("inv-start-price");
     const growth = parseSeries(document.getElementById("inv-growth").value);
     const divy = parseSeries(document.getElementById("inv-divy").value);
 
-    // 判斷使用模式：如果 B 的起始股價>0 且 growth/divy 至少有一個有效，就用 B；否則用 A
     const useB = (startPrice > 0) && (growth.length > 0 || divy.length > 0);
 
     let totalInvest = 0;
     let finalWealth = 0;
+    let detailRows = [];
 
     if (!useB){
-      // ===== 模式 A：總報酬率（沿用你原本概念）=====
+      // ===== 模式 A：總報酬率 =====
+      investLastMode = "A";
       if (returnsA.length === 0){
-        showAlert("inv-alert","模式 A：請至少輸入一個年報酬率序列（例如 0.08,0.05,...）。");
+        showAlert("inv-alert","模式 A：請至少輸入一個年報酬率（例如 0.08,0.05,...）。");
         return;
       }
       let wealth = 0;
+      let shares = 0;       // 這裡僅為表格欄位一致，模式 A 不追蹤股數/股價
+      let price = 0;
+      let cashDiv = 0;
+      for (let i=0;i<years;i++){
+        const r = returnsA[Math.min(i, returnsA.length-1)];
+        const contribution = (mode === "lumpsum" ? (i===0 ? lump : 0) : annual);
 
-      if (mode === "lumpsum"){
-        totalInvest = lump;
-        wealth = lump;
-        for (let i=0;i<years;i++){
-          const r = returnsA[Math.min(i, returnsA.length-1)];
-          wealth *= (1 + r);
-        }
-      }else{
-        wealth = 0;
-        totalInvest = 0;
-        for (let i=0;i<years;i++){
-          const r = returnsA[Math.min(i, returnsA.length-1)];
-          wealth = (wealth + annual) * (1 + r);
-          totalInvest += annual;
-        }
+        wealth = (wealth + contribution) * (1 + r);
+        totalInvest += contribution;
+
+        detailRows.push([
+          String(i+1),
+          formatMoney(contribution),
+          price ? formatMoney(price) : "-",
+          shares ? formatMoney(shares) : "-",
+          "-",
+          cashDiv ? formatMoney(cashDiv) : "-",
+          formatMoney(wealth)
+        ]);
       }
       finalWealth = wealth;
-
     }else{
-      // ===== 模式 B：股價成長 + 股利殖利率（更貼近實務）=====
-      // 這裡把「股利」拆出來；若要改成 DPS，每股股利請看註解。
+      // ===== 模式 B：股價成長 + 股利殖利率 =====
+      investLastMode = "B";
       const reinvest = document.getElementById("inv-reinvest").value === "yes";
-      const divTax = clamp(parseNumberById("inv-div-tax") / 100, 0, 1); // 簡化稅/費
-      const fee = clamp(parseNumberById("inv-fee") / 100, 0, 1);        // 簡化交易成本
+      const divTax = clamp(parseNumberById("inv-div-tax") / 100, 0, 1);
+      const fee = clamp(parseNumberById("inv-fee") / 100, 0, 1);
+
       let price = startPrice;
       let shares = 0;
       let cashDividend = 0;
 
       function applyContribution(amount){
-        // 以當下股價買入（簡化，不含交易稅等；如需可加）
-        if (amount <= 0) return;
-        const buyable = amount * (1 - fee); // 簡化：用 fee 當作買入成本
+        if (amount <= 0) return 0;
+        const buyable = amount * (1 - fee);
         shares += buyable / price;
         totalInvest += amount;
+        return amount;
       }
 
       if (mode === "lumpsum") applyContribution(lump);
 
       for (let i=0;i<years;i++){
-        if (mode === "annual") applyContribution(annual);
+        const contribution = (mode === "annual") ? applyContribution(annual) : 0;
 
         const g = growth.length ? growth[Math.min(i, growth.length-1)] : 0;
         const dy = divy.length ? divy[Math.min(i, divy.length-1)] : 0;
 
-        // 先股價成長（假設一年後）
+        // 年末股價
         price = price * (1 + g);
 
-        // 發放股利（簡化：用殖利率 * 市值）
+        // 股利（殖利率簡化）
         const value = shares * price;
-
-        // ★ 若你要改「每股股利 DPS」：把下一行改成  shares * dps
-        // const dividend = shares * dps;
+        // 若你要改 DPS：把下一行改成  const dividend = shares * dps;
         const dividend = value * dy;
 
         const netDividend = dividend * (1 - divTax);
 
         if (reinvest){
-          // 股利再投入（用當年期末價買）
           const buyable = netDividend * (1 - fee);
           shares += buyable / price;
         }else{
-          // 領現金
           cashDividend += netDividend;
         }
+
+        const wealth = shares * price + cashDividend;
+
+        detailRows.push([
+          String(i+1),
+          formatMoney(contribution),
+          formatMoney(price),
+          formatMoney(shares),
+          formatMoney(netDividend),
+          cashDividend ? formatMoney(cashDividend) : "0",
+          formatMoney(wealth)
+        ]);
       }
 
       finalWealth = shares * price + cashDividend;
-      if (totalInvest <= 0){
-        showAlert("inv-alert","投入成本為 0，無法計算報酬率。");
-        return;
-      }
+      if (totalInvest <= 0){ showAlert("inv-alert","投入成本為 0，無法計算報酬率。"); return; }
     }
 
     const totalReturn = finalWealth / totalInvest - 1;
@@ -983,7 +892,24 @@
     document.getElementById("inv-total-return").textContent = (totalReturn * 100).toFixed(2) + "%";
     document.getElementById("inv-annual-return").textContent = (annualReturn * 100).toFixed(2) + "%";
 
-    showAlert("inv-alert", `已完成計算（使用 ${useB ? "模式 B：股價+股利" : "模式 A：總報酬率"}）。`, "success");
+    investLastRows = detailRows;
+    renderInvestTable(detailRows);
+
+    showAlert("inv-alert", `已完成計算（模式 ${useB ? "B" : "A"}）。`, "success");
+  }
+
+  function exportInvestCSV(){
+    if (!investLastRows || investLastRows.length === 0){
+      showAlert("inv-alert","請先計算一次，才有明細可匯出。");
+      return;
+    }
+    const stock = document.getElementById("inv-stock").value || "stock";
+    const header = [[
+      "年","投入","股價","股數","股利(稅後)","領現股利","期末總資產"
+    ]];
+    const csv = toCSV(header.concat(investLastRows));
+    downloadText(`invest_${stock}_mode${investLastMode}.csv`, csv);
+    showAlert("inv-alert","已匯出投資明細 CSV。","success");
   }
 
   function resetInvest(){
@@ -997,32 +923,60 @@
     document.getElementById("inv-divy").value = "0.03,0.03,0.035,0.04,0.03";
     document.getElementById("inv-div-tax").value = 0;
     document.getElementById("inv-fee").value = 0;
-    ["inv-total-invest","inv-final-wealth","inv-total-return","inv-annual-return"]
-      .forEach(id=> document.getElementById(id).textContent = "-");
+
+    ["inv-total-invest","inv-final-wealth","inv-total-return","inv-annual-return"].forEach(id=>{
+      document.getElementById(id).textContent = "-";
+    });
+    document.getElementById("inv-table-body").innerHTML = "";
+    investLastRows = [];
     hideAlert("inv-alert");
     saveState();
   }
 
   /* =========================
-     模組二：收支 + 事件
+     模組二：收支 + 事件（含復原、自訂事件）
   ========================= */
-  const budgetEvents = [
-    { name: "家中洗衣機壞掉", delta: -8000, desc: "必需品開支增加，得換新洗衣機。" },
-    { name: "通貨膨脹情境", delta: -3000, desc: "物價上漲，生活成本提高。" },
-    { name: "中樂透", delta: 100000, desc: "一次性大量收入。" },
-    { name: "公司尾牙抽中十萬", delta: 100000, desc: "尾牙抽獎中的獎金。" },
-    { name: "突發車禍賠款", delta: -50000, desc: "車禍需要賠償與修車費用。" },
-    { name: "教育費臨時增加", delta: -10000, desc: "臨時加收費用。" },
-    { name: "水電費加收", delta: -3000, desc: "水電費用突然增加。" },
-    { name: "醫療保健支出增加", delta: -8000, desc: "家人身體不適，需要額外醫療支出。" },
-    { name: "股票小漲", delta: 5000, desc: "投資部位小幅獲利。" },
-    { name: "股票小跌", delta: -5000, desc: "投資部位小幅虧損。" },
-    { name: "朋友借款還你", delta: 10000, desc: "之前借出去的錢回來了。" },
-    { name: "意外損失", delta: -6000, desc: "突發的小意外開銷。" },
-    { name: "獎金入帳", delta: 20000, desc: "工作表現良好獲得獎金。" },
-    { name: "旅行超支", delta: -13000, desc: "旅遊花費超出預期。" }
+  const defaultBudgetEvents = [
+    { name:"家電壞掉", delta:-8000, desc:"突發維修或換新。", weight:12 },
+    { name:"物價上漲", delta:-3000, desc:"生活成本變高。", weight:10 },
+    { name:"獎金入帳", delta:20000, desc:"工作表現不錯。", weight:8 },
+    { name:"尾牙中獎", delta:100000, desc:"一次性獎金。", weight:2 },
+    { name:"意外支出", delta:-6000, desc:"臨時開銷。", weight:10 },
+    { name:"旅行超支", delta:-13000, desc:"行程花費超出預期。", weight:6 },
+    { name:"投資小漲", delta:5000, desc:"投資部位小幅獲利。", weight:7 },
+    { name:"投資小跌", delta:-5000, desc:"投資部位小幅虧損。", weight:7 }
   ];
 
+  function loadBudgetEvents(){
+    const raw = localStorage.getItem(LS_BUDGET_EVENTS);
+    if (!raw) return defaultBudgetEvents.slice();
+    try{
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length) return arr;
+      return defaultBudgetEvents.slice();
+    }catch(e){
+      return defaultBudgetEvents.slice();
+    }
+  }
+  function saveBudgetEvents(events){
+    localStorage.setItem(LS_BUDGET_EVENTS, JSON.stringify(events));
+  }
+
+  function pickWeighted(events, intensity=100){
+    // intensity 100 = 原權重；其他 = 乘倍率
+    const mult = clamp(intensity, 0, 300) / 100;
+    const weights = events.map(e => Math.max(0, (Number(e.weight)||0) * mult));
+    const total = weights.reduce((a,b)=>a+b,0);
+    if (total <= 0) return null;
+    let r = Math.random() * total;
+    for (let i=0;i<events.length;i++){
+      r -= weights[i];
+      if (r <= 0) return events[i];
+    }
+    return events[events.length-1];
+  }
+
+  let budgetEvents = loadBudgetEvents();
   let budgetState = null;
 
   function renderBuckets(){
@@ -1034,24 +988,38 @@
     document.getElementById("bucket-other").textContent = formatMoney(b.other);
   }
 
+  function renderBudgetLog(){
+    const tbody = document.getElementById("budget-log-body");
+    tbody.innerHTML = "";
+    if (!budgetState) return;
+    budgetState.log.forEach(row=>{
+      const tr = document.createElement("tr");
+      row.forEach((v, idx)=>{
+        const td = document.createElement("td");
+        td.textContent = v;
+        if (idx === 4){
+          const n = String(v).startsWith("-") ? -1 : 1;
+          td.className = n < 0 ? "neg" : "pos";
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
   function startBudgetGame(){
     hideAlert("budget-alert");
     const income = parseNumberById("budget-income");
     const startCash = parseNumberById("budget-start-cash");
-    if (income <= 0){
-      showAlert("budget-alert","每月收入需大於 0。");
-      return;
-    }
+    if (income <= 0){ showAlert("budget-alert","每月收入需大於 0。"); return; }
 
     const pNec = clamp(parseNumberById("pct-necessities"), 0, 100);
     const pEmg = clamp(parseNumberById("pct-emergency"), 0, 100);
     const pEnt = clamp(parseNumberById("pct-entertainment"), 0, 100);
     const pInv = clamp(parseNumberById("pct-invest"), 0, 100);
+
     const sumP = pNec + pEmg + pEnt + pInv;
-    if (sumP > 100){
-      showAlert("budget-alert","各項投入百分比總和不可超過 100%。");
-      return;
-    }
+    if (sumP > 100){ showAlert("budget-alert","百分比總和不可超過 100%。"); return; }
 
     budgetState = {
       turn: 0,
@@ -1059,33 +1027,39 @@
       income,
       percents: { necessities:pNec, emergency:pEmg, entertainment:pEnt, invest:pInv },
       buckets: { necessities:0, emergency:0, entertainment:0, invest:0, other:0 },
-      log: []
+      log: [],
+      snapshots: [] // 用來復原
     };
 
     document.getElementById("budget-turn").textContent = "0";
     document.getElementById("budget-cash").textContent = formatMoney(budgetState.cash);
-    document.getElementById("budget-log-body").innerHTML = "";
     renderBuckets();
+    renderBudgetLog();
 
-    document.getElementById("budget-start-btn").textContent = "重新開始";
     document.getElementById("budget-next-btn").disabled = false;
+    document.getElementById("budget-undo-btn").disabled = true;
 
-    showAlert("budget-alert","已開始新遊戲（每回合 = 1 個月）。", "success");
+    showAlert("budget-alert","已開始新遊戲。","success");
   }
 
   function nextBudgetTurn(){
     hideAlert("budget-alert");
-    if (!budgetState){
-      showAlert("budget-alert","請先按「開始新遊戲」。");
-      return;
-    }
+    if (!budgetState){ showAlert("budget-alert","請先開始遊戲。"); return; }
+
+    // snapshot for undo
+    budgetState.snapshots.push(JSON.parse(JSON.stringify({
+      turn: budgetState.turn,
+      cash: budgetState.cash,
+      buckets: budgetState.buckets,
+      log: budgetState.log
+    })));
 
     budgetState.turn += 1;
 
     // 1) 入帳收入
     budgetState.cash += budgetState.income;
 
-    // 2) 分桶（從現金扣出，累積到桶）
+    // 2) 分桶
     const inc = budgetState.income;
     const p = budgetState.percents;
     const nec = inc * p.necessities/100;
@@ -1103,8 +1077,13 @@
     budgetState.buckets.other += other;
 
     // 3) 事件
-    const event = budgetEvents[Math.floor(Math.random()*budgetEvents.length)];
-    budgetState.cash += event.delta;
+    const intensity = parseNumberById("budget-event-intensity");
+    const event = pickWeighted(budgetEvents, intensity);
+    if (!event){
+      showAlert("budget-alert","事件權重為 0（沒有事件可抽）。請調整事件強度或新增事件。");
+      return;
+    }
+    budgetState.cash += Number(event.delta) || 0;
 
     // 顯示
     document.getElementById("budget-turn").textContent = String(budgetState.turn);
@@ -1112,29 +1091,43 @@
     renderBuckets();
 
     const allocationText = `${formatMoney(nec)} / ${formatMoney(emg)} / ${formatMoney(ent)} / ${formatMoney(inv)} / ${formatMoney(other)}`;
+    const deltaText = ((Number(event.delta)||0) >= 0 ? "+" : "") + formatMoney(event.delta);
 
-    // log
     const row = [
       budgetState.turn,
       formatMoney(budgetState.income),
       allocationText,
       event.name,
-      (event.delta>=0?"+":"") + formatMoney(event.delta),
+      deltaText,
       formatMoney(budgetState.cash),
-      event.desc
+      event.desc || ""
     ];
     budgetState.log.push(row);
+    renderBudgetLog();
 
-    const tr = document.createElement("tr");
-    row.forEach((v, idx)=>{
-      const td = document.createElement("td");
-      td.textContent = v;
-      if (idx === 4){
-        td.className = event.delta < 0 ? "neg" : "pos";
-      }
-      tr.appendChild(td);
-    });
-    document.getElementById("budget-log-body").appendChild(tr);
+    document.getElementById("budget-undo-btn").disabled = budgetState.snapshots.length === 0;
+  }
+
+  function undoBudgetTurn(){
+    hideAlert("budget-alert");
+    if (!budgetState || budgetState.snapshots.length === 0){
+      showAlert("budget-alert","目前沒有可復原的回合。");
+      return;
+    }
+    const snap = budgetState.snapshots.pop();
+
+    budgetState.turn = snap.turn;
+    budgetState.cash = snap.cash;
+    budgetState.buckets = snap.buckets;
+    budgetState.log = snap.log;
+
+    document.getElementById("budget-turn").textContent = String(budgetState.turn);
+    document.getElementById("budget-cash").textContent = formatMoney(budgetState.cash);
+    renderBuckets();
+    renderBudgetLog();
+
+    document.getElementById("budget-undo-btn").disabled = budgetState.snapshots.length === 0;
+    showAlert("budget-alert","已復原上一回合。","success");
   }
 
   function clearBudgetLog(){
@@ -1144,8 +1137,10 @@
       return;
     }
     budgetState.log = [];
+    budgetState.snapshots = [];
     document.getElementById("budget-log-body").innerHTML = "";
-    showAlert("budget-alert","已清除收支事件紀錄。","success");
+    document.getElementById("budget-undo-btn").disabled = true;
+    showAlert("budget-alert","已清除紀錄。","success");
   }
 
   function exportBudgetCSV(){
@@ -1153,10 +1148,52 @@
       showAlert("budget-alert","目前沒有可匯出的紀錄。");
       return;
     }
-    const header = [["回合","月收入入帳","分配(必需/緊急/娛樂/投資/其他)","事件","事件金額","回合後現金","說明"]];
+    const header = [["回合","月收入","分配(必需/緊急/娛樂/投資/其他)","事件","事件金額","回合後現金","說明"]];
     const csv = toCSV(header.concat(budgetState.log));
     downloadText("budget_log.csv", csv);
     showAlert("budget-alert","已匯出 budget_log.csv","success");
+  }
+
+  /* =========================
+     自訂事件 Modal
+  ========================= */
+  function openEventModal(){
+    hideAlert("evt-alert");
+    document.getElementById("eventModal").classList.add("show");
+  }
+  function closeEventModal(){
+    document.getElementById("eventModal").classList.remove("show");
+  }
+  document.getElementById("eventModal").addEventListener("click", (e)=>{
+    if (e.target.id === "eventModal") closeEventModal();
+  });
+
+  function addCustomEvent(){
+    hideAlert("evt-alert");
+    const name = String(document.getElementById("evt-name").value || "").trim();
+    const delta = parseFloat(document.getElementById("evt-delta").value);
+    const desc = String(document.getElementById("evt-desc").value || "").trim();
+    const weight = clamp(parseInt(document.getElementById("evt-weight").value,10) || 0, 1, 100);
+
+    if (!name){ showAlert("evt-alert","請輸入事件名稱。"); return; }
+    if (isNaN(delta) || delta === 0){ showAlert("evt-alert","事件金額請輸入非 0 數字（可正可負）。"); return; }
+
+    budgetEvents.push({ name, delta, desc, weight });
+    saveBudgetEvents(budgetEvents);
+
+    document.getElementById("evt-name").value = "";
+    document.getElementById("evt-delta").value = "";
+    document.getElementById("evt-desc").value = "";
+    document.getElementById("evt-weight").value = 10;
+
+    showAlert("evt-alert","已新增事件，並保存到瀏覽器。","success");
+  }
+
+  function clearCustomEvents(){
+    hideAlert("evt-alert");
+    budgetEvents = defaultBudgetEvents.slice();
+    saveBudgetEvents(budgetEvents);
+    showAlert("evt-alert","已清空自訂事件（回到預設事件）。","success");
   }
 
   /* =========================
@@ -1170,18 +1207,11 @@
     const age = parseInt(document.getElementById("ins-start-age").value,10) || 0;
     const maxTurns = parseInt(document.getElementById("ins-max-turns").value,10) || 0;
     if (cash <= 0 || age <= 0 || maxTurns <= 0){
-      showAlert("ins-alert","請確認起始現金、年齡與回合數皆為正數。");
+      showAlert("ins-alert","請確認起始現金、年齡、回合數皆為正數。");
       return;
     }
 
-    insState = {
-      age, turn: 0, maxTurns,
-      cash,
-      totalPrem: 0,
-      totalPayout: 0,
-      totalOut: 0,
-      log: []
-    };
+    insState = { age, turn:0, maxTurns, cash, totalPrem:0, totalPayout:0, totalOut:0, log:[] };
 
     document.getElementById("ins-age").textContent = insState.age;
     document.getElementById("ins-turn").textContent = insState.turn;
@@ -1192,15 +1222,12 @@
     document.getElementById("ins-log-body").innerHTML = "";
     document.getElementById("ins-next-btn").disabled = false;
 
-    showAlert("ins-alert","已開始新遊戲。","success");
+    showAlert("ins-alert","已開始。","success");
   }
 
   function nextInsTurn(){
     hideAlert("ins-alert");
-    if (!insState){
-      showAlert("ins-alert","請先按「開始新遊戲」。");
-      return;
-    }
+    if (!insState){ showAlert("ins-alert","請先開始。"); return; }
     if (insState.turn >= insState.maxTurns){
       showAlert("ins-alert","已到達最大回合數。");
       document.getElementById("ins-next-btn").disabled = true;
@@ -1230,9 +1257,7 @@
     insState.turn += 1;
     insState.age += 1;
 
-    let premThis = 0;
-    let payoutThis = 0;
-    let outThis = 0;
+    let premThis = 0, payoutThis = 0, outThis = 0;
     let descs = [];
 
     if (hasLife) premThis += premLife;
@@ -1242,41 +1267,26 @@
     insState.cash -= premThis;
     insState.totalPrem += premThis;
 
-    // 事故判定：有保險 -> 理賠；沒保險 -> 自付成本
     const lifeHit = Math.random() < probLife;
     const medHit  = Math.random() < probMed;
     const propHit = Math.random() < probProp;
 
-    if (lifeHit){
-      if (hasLife){
-        payoutThis += payoutLife;
-        descs.push("壽險事故：理賠 " + formatMoney(payoutLife));
+    function handle(hit, has, payout, cost, label){
+      if (!hit) return;
+      if (has){
+        payoutThis += payout;
+        descs.push(`${label}：理賠 +${formatMoney(payout)}`);
       }else{
-        outThis += costNoLife;
-        descs.push("壽險事故：自付 -" + formatMoney(costNoLife));
+        outThis += cost;
+        descs.push(`${label}：自付 -${formatMoney(cost)}`);
       }
     }
-    if (medHit){
-      if (hasMed){
-        payoutThis += payoutMed;
-        descs.push("醫療事故：理賠 " + formatMoney(payoutMed));
-      }else{
-        outThis += costNoMed;
-        descs.push("醫療事故：自付 -" + formatMoney(costNoMed));
-      }
-    }
-    if (propHit){
-      if (hasProp){
-        payoutThis += payoutProp;
-        descs.push("財產事故：理賠 " + formatMoney(payoutProp));
-      }else{
-        outThis += costNoProp;
-        descs.push("財產事故：自付 -" + formatMoney(costNoProp));
-      }
-    }
-    if (!lifeHit && !medHit && !propHit){
-      descs.push("本回合無事故發生");
-    }
+
+    handle(lifeHit, hasLife, payoutLife, costNoLife, "壽險事故");
+    handle(medHit,  hasMed,  payoutMed,  costNoMed,  "醫療事故");
+    handle(propHit, hasProp, payoutProp, costNoProp, "財產事故");
+
+    if (!lifeHit && !medHit && !propHit) descs.push("本回合無事故");
 
     insState.cash += payoutThis;
     insState.cash -= outThis;
@@ -1327,7 +1337,7 @@
     }
     insState.log = [];
     document.getElementById("ins-log-body").innerHTML = "";
-    showAlert("ins-alert","已清除保險事件紀錄。","success");
+    showAlert("ins-alert","已清除紀錄。","success");
   }
 
   function exportInsCSV(){
@@ -1335,7 +1345,7 @@
       showAlert("ins-alert","目前沒有可匯出的紀錄。");
       return;
     }
-    const header = [["回合","年齡","保費支出","理賠收入","沒保險自付","事故說明","回合後現金"]];
+    const header = [["回合","年齡","保費支出","理賠收入","自付(沒保險)","事故說明","回合後現金"]];
     const csv = toCSV(header.concat(insState.log));
     downloadText("insurance_log.csv", csv);
     showAlert("ins-alert","已匯出 insurance_log.csv","success");
@@ -1364,11 +1374,8 @@
     const r = rateAnnual / nperYear;
 
     let payment = 0;
-    if (r === 0){
-      payment = principal / n;
-    }else{
-      payment = principal * r / (1 - Math.pow(1 + r, -n));
-    }
+    if (r === 0) payment = principal / n;
+    else payment = principal * r / (1 - Math.pow(1 + r, -n));
 
     let balance = principal;
     let totalInterest = 0;
@@ -1379,10 +1386,9 @@
       const interest = balance * r;
       let principalPay = payment - interest;
 
-      // 最後一期補差：把餘額清到 0
       if (i === n){
         principalPay = balance;
-        payment = principalPay + interest; // 最後一期可能略不同（更貼近真實）
+        payment = principalPay + interest;
       }
 
       balance = balance - principalPay;
@@ -1391,18 +1397,12 @@
       totalInterest += interest;
 
       const tr = document.createElement("tr");
-      const cells = [
-        i,
-        formatMoney(payment),
-        formatMoney(principalPay),
-        formatMoney(interest),
-        formatMoney(balance)
-      ];
-      cells.forEach(v=>{
-        const td = document.createElement("td");
-        td.textContent = v;
-        tr.appendChild(td);
-      });
+      [i, formatMoney(payment), formatMoney(principalPay), formatMoney(interest), formatMoney(balance)]
+        .forEach(v=>{
+          const td = document.createElement("td");
+          td.textContent = v;
+          tr.appendChild(td);
+        });
       tbody.appendChild(tr);
     }
 
@@ -1410,8 +1410,7 @@
     document.getElementById("loan-payment").textContent = formatMoney(payment);
     document.getElementById("loan-total-interest").textContent = formatMoney(totalInterest);
     document.getElementById("loan-total-paid").textContent = formatMoney(totalPaid);
-
-    showAlert("loan-alert","已完成攤還表計算。","success");
+    showAlert("loan-alert","已完成計算。","success");
   }
 
   function clearLoan(){
